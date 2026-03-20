@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light" data-tab-theme="home">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jägermeister Russia - Официальный производитель</title>
+    <link rel="stylesheet" href="1css.css">
+    <link rel="shortcut icon" href="favicon/favicon.png" type="image/png">
+<base target="_blank">
+</head>
+<body>
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Registration/Login Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal" id="authModalContent">
+            <span class="modal-close" onclick="closeAuthModal()">&times;</span>
+            <div id="registerForm">
+                <h2>🦌 Регистрация</h2>
+                <form id="regForm" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="regName">Имя *</label>
+                        <input type="text" id="regName" required placeholder="Введите ваше имя" minlength="2">
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email *</label>
+                        <input type="email" id="regEmail" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPhone">Телефон</label>
+                        <input type="tel" id="regPhone" placeholder="+7 (999) 999-99-99">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Пароль *</label>
+                        <input type="password" id="regPassword" required placeholder="Минимум 8 символов" minlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label for="regConfirm">Подтвердите пароль *</label>
+                        <input type="password" id="regConfirm" required placeholder="Повторите пароль">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="regAgree" required>
+                            Я согласен с <a href="#" style="color: var(--jg-orange);">условиями использования</a> и подтверждаю, что мне есть 18 лет
+                        </label>
+                    </div>
+                    <button type="submit" class="btn">Зарегистрироваться</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAuthModal()">Отмена</button>
+                </form>
+                <div class="auth-links">
+                    <p>Уже есть аккаунт? <a href="#" onclick="showLoginForm()">Войти</a></p>
+                </div>
+            </div>
+            <div id="loginForm" style="display: none;">
+                <h2>👤 Вход в аккаунт</h2>
+                <form id="loginFormElement" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email *</label>
+                        <input type="email" id="loginEmail" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Пароль *</label>
+                        <input type="password" id="loginPassword" required placeholder="Введите пароль">
+                    </div>
+                    <button type="submit" class="btn">Войти</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAuthModal()">Отмена</button>
+                </form>
+                <div class="auth-links">
+                    <p>Нет аккаунта? <a href="#" onclick="showRegisterForm()">Зарегистрироваться</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal modal-large">
+            <span class="modal-close" onclick="closeProductModal()">&times;</span>
+            <div id="productDetailContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div style="font-size: 90px; text-shadow: 0 0 30px rgba(0,255,102,0.8);">🦌</div>
+                <div class="logo-text">JÄGERMEISTER</div>
+                <p style="font-size: 13px; opacity: 0.95; margin-top: 8px; text-shadow: 0 0 10px rgba(255,102,0,0.8);">Официальное производство в РФ</p>
+            </div>
+
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#" class="nav-link active" data-tab="home">🏠 Главная</a></li>
+                    <li><a href="#" class="nav-link" data-tab="about">📖 О нас</a></li>
+                    <li><a href="#" class="nav-link" data-tab="products">🍾 Алкоголь</a></li>
+                    <li><a href="#" class="nav-link" data-tab="tobacco">🚬 Табак</a></li>
+                    <li><a href="#" class="nav-link" data-tab="vape">💨 Вейпы</a></li>
+                    <li><a href="#" class="nav-link" data-tab="recipes">🍸 Коктейли</a></li>
+                    <li><a href="#" class="nav-link" data-tab="cart">🛒 Корзина <span id="cartBadge" class="cart-badge" style="display:none;">0</span></a></li>
+                    <li><a href="#" class="nav-link" data-tab="contacts">📞 Контакты</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div id="userSection">
+                    <button class="btn" onclick="return openAuthModal()" style="margin-bottom: 15px; width: 100%;">👤 Войти / Регистрация</button>
+                </div>
+                <p>&copy; 2026 Jägermeister Russia</p>
+                <p style="font-size: 11px; margin-top: 5px;">Официальный производитель в РФ</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Theme Switch -->
+            <div class="page-header">
+                <h1 id="pageTitle">Jägermeister Russia</h1>
+                <div class="theme-switch-wrapper">
+                    <span class="theme-switch-label">☀️</span>
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round"></div>
+                    </label>
+                    <span class="theme-switch-label">🌙</span>
+                </div>
+            </div>
+
+            <!-- HOME TAB -->
+            <div id="home" class="tab-content active">
+                <div class="hero">
+                    <h1>🦌 Jägermeister Russia</h1>
+                    <p>Официальное производство легендарного немецкого травяного ликера на территории Российской Федерации. Традиции с 1934 года.</p>
+                    <a href="#" class="btn" onclick="return switchTab('products')">Наша продукция</a>
+                    <a href="#" class="btn btn-secondary" onclick="return switchTab('about')">О компании</a>
+                </div>
+
+                <div class="card">
+                    <h2>🏭 О нашей компании</h2>
+                    <p><strong>Jägermeister Russia</strong> — это официальное российское подразделение Mast-Jägermeister SE, единственного в мире производителя легендарного травяного ликера Jägermeister.</p>
+
+                    <p>Мы производим аутентичный Jägermeister крепостью 35% на территории России, используя оригинальный немецкий рецепт 1934 года и 56 натуральных ингредиентов, поставляемых из Германии.</p>
+
+                    <h3>🎯 Наша миссия</h3>
+                    <p>Приносить легендарный вкус Jägermeister российским потребителям, сохраняя немецкие традиции качества и используя только оригинальные ингредиенты.</p>
+
+                    <h3>✅ Почему выбирают нас</h3>
+                    <ul>
+                        <li><strong>Официальное производство</strong> — лицензия Mast-Jägermeister SE</li>
+                        <li><strong>Оригинальный рецепт</strong> — точное соблюдение немецких стандартов</li>
+                        <li><strong>56 ингредиентов</strong> — натуральные травы, специи и коренья</li>
+                        <li><strong>12 месяцев выдержки</strong> — в дубовых бочках из Пфальцского леса</li>
+                        <li><strong>Контроль качества</strong> — на каждом этапе производства</li>
+                    </ul>
+                </div>
+
+                <div class="grid">
+                    <div class="card feature-card">
+                        <span class="feature-icon">🌿</span>
+                        <h3>56 ингредиентов</h3>
+                        <p>Уникальный рецепт из 56 трав, специй, кореньев и фруктов со всего мира</p>
+                    </div>
+                    <div class="card feature-card">
+                        <span class="feature-icon">🛢️</span>
+                        <h3>12 месяцев выдержки</h3>
+                        <p>Напиток созревает в дубовых бочках не менее года для идеального вкуса</p>
+                    </div>
+                    <div class="card feature-card">
+                        <span class="feature-icon">🏭</span>
+                        <h3>Производство в РФ</h3>
+                        <p>Современный завод с немецким оборудованием в России</p>
+                    </div>
+                    <div class="card feature-card">
+                        <span class="feature-icon">🌍</span>
+                        <h3>140+ стран мира</h3>
+                        <p>Jägermeister экспортируется более чем в 140 стран по всему миру</p>
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="card stat-card">
+                        <div class="stat-number">90+</div>
+                        <div class="stat-label">Лет истории</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-number">56</div>
+                        <div class="stat-label">Ингредиентов</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-number">64M</div>
+                        <div class="stat-label">Литров в год</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABOUT TAB -->
+            <div id="about" class="tab-content">
+                <div class="card">
+                    <h2>📖 О компании Jägermeister Russia</h2>
+                    <p>Мы — официальное российское подразделение Mast-Jägermeister SE, единственного производителя легендарного травяного ликера Jägermeister в мире.</p>
+
+                    <h3>Наша миссия</h3>
+                    <p>Приносить легендарный вкус Jägermeister российским потребителям, сохраняя немецкие традиции качества и используя только оригинальные ингредиенты.</p>
+
+                    <h3>Почему выбирают нас</h3>
+                    <ul>
+                        <li>✅ Официальное производство на территории РФ</li>
+                        <li>✅ Оригинальный немецкий рецепт</li>
+                        <li>✅ Контроль качества на каждом этапе</li>
+                        <li>✅ Экологичное производство</li>
+                        <li>✅ Поддержка музыкальной культуры и спорта</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2>🎯 Ценности бренда</h2>
+                    <div class="grid">
+                        <div class="feature-card">
+                            <span class="feature-icon">🌱</span>
+                            <h3>Уважение к природе</h3>
+                            <p>Мы заботимся об окружающей среде и используем экологичные технологии производства</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🎵</span>
+                            <h3>Музыкальная культура</h3>
+                            <p>Jägermeister — спонсор крупнейших музыкальных фестивалей и Jager Music Awards</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🤝</span>
+                            <h3>Ответственность</h3>
+                            <p>Призываем к ответственному потреблению алкоголя</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ALCOHOL PRODUCTS TAB -->
+            <div id="products" class="tab-content">
+                <div class="card">
+                    <h2>🍾 Алкогольная продукция</h2>
+                    <p>Широкий ассортимент алкогольных напитков от лучших мировых и российских производителей.</p>
+                </div>
+
+                <!-- Крепкий алкоголь -->
+                <div class="card">
+                    <h3>🥃 Крепкий алкоголь</h3>
+                    <div class="product-gallery">
+                        <div class="product-item" onclick="showProductDetail('jager-classic')">
+                            <div class="product-image">🦌</div>
+                            <div class="product-info">
+                                <h3>Jägermeister Classic</h3>
+                                <p>Классический травяной ликер крепостью 35%. 56 ингредиентов, выдержка 12 месяцев.</p>
+                                <p><strong>Объемы:</strong> 0.5L, 0.7L, 1L, 1.75L</p>
+                                <div class="product-price" data-price="1299">от 1 299 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('jager-classic')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('jager-coldbrew')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #8B4513, #D2691E);">☕</div>
+                            <div class="product-info">
+                                <h3>Jägermeister Cold Brew</h3>
+                                <p>Кофейный ликер крепостью 33%. Сочетание классического рецепта с холодным кофе.</p>
+                                <div class="product-price" data-price="1499">1 499 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('jager-coldbrew')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('jager-manifest')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FFD700, #FFA500);">👑</div>
+                            <div class="product-info">
+                                <h3>Jägermeister Manifest</h3>
+                                <p>Премиальный ликер крепостью 38%. Выдержка в бочках с нотками ванили.</p>
+                                <div class="product-price" data-price="2999">2 999 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('jager-manifest')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('jack-daniels')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #4169E1, #000080);">🥃</div>
+                            <div class="product-info">
+                                <h3>Jack Daniel's</h3>
+                                <p>Легендарный американский виски. Крепость 40%. Выдержка в дубовых бочках.</p>
+                                <div class="product-price" data-price="2448">2 448 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('jack-daniels')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('jameson')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #DC143C, #8B0000);">🥃</div>
+                            <div class="product-info">
+                                <h3>Jameson</h3>
+                                <p>Ирландский виски тройной дистилляции. Мягкий вкус с нотками ванили.</p>
+                                <div class="product-price" data-price="3221">3 221 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('jameson')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('chivas')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #C0C0C0, #808080);">🍸</div>
+                            <div class="product-info">
+                                <h3>Chivas Regal 12 Years</h3>
+                                <p>Шотландский купажированный виски. 12 лет выдержки, насыщенный вкус.</p>
+                                <div class="product-price" data-price="3817">3 817 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('chivas')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('jim-beam')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FF6347, #FF4500);">🌶️</div>
+                            <div class="product-info">
+                                <h3>Jim Beam</h3>
+                                <p>Классический американский бурбон. Насыщенный вкус с нотками карамели.</p>
+                                <div class="product-price" data-price="1352">1 352 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('jim-beam')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('macallan')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #4B0082, #8A2BE2);">🍇</div>
+                            <div class="product-info">
+                                <h3>Macallan 12 Years</h3>
+                                <p>Премиальный шотландский односолодовый виски. Тройная выдержка.</p>
+                                <div class="product-price" data-price="3528">3 528 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('macallan')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('ballantines')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #228B22, #006400);">🥃</div>
+                            <div class="product-info">
+                                <h3>Ballantine's Finest</h3>
+                                <p>Шотландский бленд. Мягкий вкус с ароматом верескового меда.</p>
+                                <div class="product-price" data-price="757">757 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('ballantines')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('belvedere')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #F5F5DC, #D3D3D3);">💎</div>
+                            <div class="product-info">
+                                <h3>Belvedere Vodka</h3>
+                                <p>Премиальная польская водка из ржи. Крепость 40%, чистый вкус.</p>
+                                <div class="product-price" data-price="2890">2 890 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('belvedere')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('grey-goose')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #87CEEB, #4682B4);">🦢</div>
+                            <div class="product-info">
+                                <h3>Grey Goose</h3>
+                                <p>Французская премиум-водка. Мягкий вкус с нотками миндаля.</p>
+                                <div class="product-price" data-price="3150">3 150 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('grey-goose')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('absolut')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #0000CD, #4169E1);">❄️</div>
+                            <div class="product-info">
+                                <h3>Absolut Vodka</h3>
+                                <p>Шведская водка. Крепость 40%, идеальна для коктейлей.</p>
+                                <div class="product-price" data-price="1190">1 190 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('absolut')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вино -->
+                <div class="card">
+                    <h3>🍷 Вино</h3>
+                    <div class="product-gallery">
+                        <div class="product-item" onclick="showProductDetail('moet')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FFD700, #F5DEB3);">🥂</div>
+                            <div class="product-info">
+                                <h3>Moët & Chandon Impérial</h3>
+                                <p>Легендарное французское шампанское. Брют, элегантный вкус.</p>
+                                <div class="product-price" data-price="4890">4 890 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('moet')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('prosecco')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #E6E6FA, #DDA0DD);">🍾</div>
+                            <div class="product-info">
+                                <h3>Prosecco DOC</h3>
+                                <p>Итальянское игристое вино. Лёгкое, фруктовое.</p>
+                                <div class="product-price" data-price="1290">1 290 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('prosecco')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('barolo')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #8B0000, #722F37);">🍷</div>
+                            <div class="product-info">
+                                <h3>Barolo DOCG</h3>
+                                <p>Король итальянских вин. Мощное красное из Неббиоло.</p>
+                                <div class="product-price" data-price="3450">3 450 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('barolo')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('chianti')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #DC143C, #8B0000);">🍷</div>
+                            <div class="product-info">
+                                <h3>Chianti Classico</h3>
+                                <p>Классическое тосканское вино. Сухое, с нотками вишни.</p>
+                                <div class="product-price" data-price="1890">1 890 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('chianti')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Пиво -->
+                <div class="card">
+                    <h3>🍺 Пиво</h3>
+                    <div class="product-gallery">
+                        <div class="product-item" onclick="showProductDetail('heineken')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #00FF00, #32CD32);">🍺</div>
+                            <div class="product-info">
+                                <h3>Heineken</h3>
+                                <p>Голландский лагер премиум-класса. Освежающий вкус.</p>
+                                <div class="product-price" data-price="129">129 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('heineken')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('guinness')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #000000, #2F4F4F);">🍺</div>
+                            <div class="product-info">
+                                <h3>Guinness Draught</h3>
+                                <p>Ирландский стаут с кремовой пенкой. Насыщенный вкус.</p>
+                                <div class="product-price" data-price="189">189 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('guinness')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('paulaner')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FFD700, #FFA500);">🍺</div>
+                            <div class="product-info">
+                                <h3>Paulaner Weissbier</h3>
+                                <p>Немецкая пшеничное пиво. Фруктовые ноты банана.</p>
+                                <div class="product-price" data-price="159">159 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('paulaner')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('corona')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #F4A460, #D2691E);">🍺</div>
+                            <div class="product-info">
+                                <h3>Corona Extra</h3>
+                                <p>Мексиканское светлое пиво. Идеально с лаймом.</p>
+                                <div class="product-price" data-price="149">149 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('corona')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOBACCO TAB -->
+            <div id="tobacco" class="tab-content">
+                <div class="card">
+                    <h2>🚬 Табачная продукция</h2>
+                    <p>Широкий выбор табачных изделий от ведущих мировых брендов.</p>
+                </div>
+
+                <!-- Сигареты -->
+                <div class="card">
+                    <h3>🚬 Сигареты</h3>
+                    <div class="product-gallery">
+                        <div class="product-item" onclick="showProductDetail('marlboro-red')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #DC143C, #8B0000);">🚬</div>
+                            <div class="product-info">
+                                <h3>Marlboro Red</h3>
+                                <p>Классические американские сигареты. Насыщенный вкус.</p>
+                                <p><strong>Формат:</strong> King Size, 20 шт.</p>
+                                <div class="product-price" data-price="209">209 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('marlboro-red')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('marlboro-blue')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #4169E1, #0000CD);">🚬</div>
+                            <div class="product-info">
+                                <h3>Marlboro Blue</h3>
+                                <p>Более лёгкая версия. Мягкий вкус, сниженная крепость.</p>
+                                <div class="product-price" data-price="209">209 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('marlboro-blue')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('winston')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FFD700, #DAA520);">🚬</div>
+                            <div class="product-info">
+                                <h3>Winston Classic</h3>
+                                <p>Классические сигареты премиум-класса.</p>
+                                <div class="product-price" data-price="180">180 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('winston')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('parliament')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #C0C0C0, #808080);">🚬</div>
+                            <div class="product-info">
+                                <h3>Parliament</h3>
+                                <p>Премиальные сигареты с фильтром-вставкой.</p>
+                                <div class="product-price" data-price="280">280 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('parliament')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('chesterfield')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #8B4513, #A0522D);">🚬</div>
+                            <div class="product-info">
+                                <h3>Chesterfield Red</h3>
+                                <p>Популярная марка с насыщенным ароматом.</p>
+                                <div class="product-price" data-price="170">170 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('chesterfield')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('bond')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FF4500, #FF6347);">🚬</div>
+                            <div class="product-info">
+                                <h3>Bond Street</h3>
+                                <p>Сбалансированный вкус, оптимальная цена.</p>
+                                <div class="product-price" data-price="169">169 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('bond')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('lm')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #1E90FF, #0000FF);">🚬</div>
+                            <div class="product-info">
+                                <h3>L&M Blue Label</h3>
+                                <p>Двойной ацетатный фильтр, оригинальный вкус.</p>
+                                <div class="product-price" data-price="130">130 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('lm')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('rothmans')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #4B0082, #8A2BE2);">🚬</div>
+                            <div class="product-info">
+                                <h3>Rothmans Royals</h3>
+                                <p>Богатый выбор вкусов, отличное качество.</p>
+                                <div class="product-price" data-price="150">150 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('rothmans')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('camel')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #D2691E, #8B4513);">🚬</div>
+                            <div class="product-info">
+                                <h3>Camel Filters</h3>
+                                <p>Оригинальный аромат, долгое послевкусие.</p>
+                                <div class="product-price" data-price="170">170 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('camel')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('kent')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #708090, #2F4F4F);">🚬</div>
+                            <div class="product-info">
+                                <h3>Kent Nanotek</h3>
+                                <p>Угольный фильтр, 15 различных видов.</p>
+                                <div class="product-price" data-price="200">200 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('kent')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('dunhill')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #000000, #434343);">🚬</div>
+                            <div class="product-info">
+                                <h3>Dunhill International</h3>
+                                <p>Премиум-класс, герметичная упаковка.</p>
+                                <div class="product-price" data-price="240">240 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('dunhill')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('vogue')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FF69B4, #C71585);">🚬</div>
+                            <div class="product-info">
+                                <h3>Vogue Superslims</h3>
+                                <p>Элегантные сигареты для женщин.</p>
+                                <div class="product-price" data-price="200">200 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('vogue')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Сигары -->
+                <div class="card">
+                    <h3>🚬 Сигары</h3>
+                    <div class="product-gallery">
+                        <div class="product-item" onclick="showProductDetail('cohiba')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #8B4513, #D2691E);">🚬</div>
+                            <div class="product-info">
+                                <h3>Cohiba Behike 52</h3>
+                                <p>Премиальные кубинские сигары. Ручная работа.</p>
+                                <div class="product-price" data-price="3500">3 500 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('cohiba')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('montecristo')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #654321, #8B4513);">🚬</div>
+                            <div class="product-info">
+                                <h3>Montecristo No. 2</h3>
+                                <p>Легендарные кубинские сигары. Форма пирамиды.</p>
+                                <div class="product-price" data-price="2800">2 800 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('montecristo')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('romeo')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #A0522D, #CD853F);">🚬</div>
+                            <div class="product-info">
+                                <h3>Romeo y Julieta</h3>
+                                <p>Классические кубинские сигары.</p>
+                                <div class="product-price" data-price="1900">1 900 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('romeo')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('davidoff')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #D2691E, #8B4513);">🚬</div>
+                            <div class="product-info">
+                                <h3>Davidoff Aniversario</h3>
+                                <p>Швейцарские сигары премиум-класса.</p>
+                                <div class="product-price" data-price="4200">4 200 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('davidoff')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Табак для кальяна -->
+                <div class="card">
+                    <h3>🌿 Табак для кальяна</h3>
+                    <div class="product-gallery">
+                        <div class="product-item" onclick="showProductDetail('musthave')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #9370DB, #8A2BE2);">🌿</div>
+                            <div class="product-info">
+                                <h3>Must Have Barberry</h3>
+                                <p>Российский табак премиум-класса.</p>
+                                <div class="product-price" data-price="450">450 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('musthave')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('darkside')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FF69B4, #FF1493);">🌿</div>
+                            <div class="product-info">
+                                <h3>Dark Side Supernova</h3>
+                                <p>Крепкий табак для насыщенного вкуса.</p>
+                                <div class="product-price" data-price="520">520 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('darkside')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('alfakher')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #32CD32, #228B22);">🌿</div>
+                            <div class="product-info">
+                                <h3>Al Fakher Mint</h3>
+                                <p>Классический арабский табак.</p>
+                                <div class="product-price" data-price="380">380 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('alfakher')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('tangiers')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FF6347, #FF4500);">🌿</div>
+                            <div class="product-info">
+                                <h3>Tangiers Cane Mint</h3>
+                                <p>Американский табак премиум-класса.</p>
+                                <div class="product-price" data-price="890">890 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('tangiers')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VAPE TAB -->
+            <div id="vape" class="tab-content">
+                <div class="card">
+                    <h2>💨 Вейп-продукция</h2>
+                    <p>Электронные сигареты, жидкости и аксессуары от лучших производителей.</p>
+                </div>
+
+                <!-- Электронные сигареты -->
+                <div class="card">
+                    <h3>💨 Электронные сигареты</h3>
+                    <div class="product-gallery">
+                        <div class="product-item" onclick="showProductDetail('iqos')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #C0C0C0, #808080);">💨</div>
+                            <div class="product-info">
+                                <h3>IQOS ILUMA</h3>
+                                <p>Нагреватель табака нового поколения.</p>
+                                <div class="product-price" data-price="4990">4 990 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('iqos')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('vthru')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #4169E1, #0000CD);">💨</div>
+                            <div class="product-info">
+                                <h3>Voopoo V.THRU Pro</h3>
+                                <p>Компактный POD с OLED-дисплеем.</p>
+                                <div class="product-price" data-price="2500">2 500 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('vthru')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('xros3')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FF6347, #FF4500);">💨</div>
+                            <div class="product-info">
+                                <h3>Vaporesso XROS 3</h3>
+                                <p>Популярная POD-система с регулировкой.</p>
+                                <div class="product-price" data-price="2400">2 400 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('xros3')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('vmate')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #9370DB, #8A2BE2);">💨</div>
+                            <div class="product-info">
+                                <h3>Voopoo VMATE E</h3>
+                                <p>Стильный POD с технологией ITO.</p>
+                                <div class="product-price" data-price="2900">2 900 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('vmate')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('aegis')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #228B22, #006400);">💨</div>
+                            <div class="product-info">
+                                <h3>GeekVape Aegis Boost 2</h3>
+                                <p>Защищенный POD до 60W.</p>
+                                <div class="product-price" data-price="3800">3 800 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('aegis')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('hero2')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FFD700, #FFA500);">💨</div>
+                            <div class="product-info">
+                                <h3>GeekVape H45 Hero 2</h3>
+                                <p>Мощный POD до 45W.</p>
+                                <div class="product-price" data-price="3500">3 500 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('hero2')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('luxexr')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #00CED1, #20B2AA);">💨</div>
+                            <div class="product-info">
+                                <h3>Vaporesso Luxe XR Max</h3>
+                                <p>Мощная система до 80W.</p>
+                                <div class="product-price" data-price="4200">4 200 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('luxexr')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('elfbar')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FF69B4, #FF1493);">💨</div>
+                            <div class="product-info">
+                                <h3>Elf Bar 1500</h3>
+                                <p>Популярная одноразовая система.</p>
+                                <div class="product-price" data-price="890">890 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('elfbar')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Жидкости для вейпа -->
+                <div class="card">
+                    <h3>🧪 Жидкости для вейпа</h3>
+                    <div class="product-gallery">
+                        <div class="product-item" onclick="showProductDetail('ivg')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FF69B4, #FF1493);">🧪</div>
+                            <div class="product-info">
+                                <h3>IVG Pink Lemonade</h3>
+                                <p>Освежающий лимонад с ягодами.</p>
+                                <div class="product-price" data-price="650">650 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('ivg')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('nasty')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #32CD32, #228B22);">🧪</div>
+                            <div class="product-info">
+                                <h3>Nasty Juice Cush Man</h3>
+                                <p>Сочное манго с мятой.</p>
+                                <div class="product-price" data-price="720">720 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('nasty')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('dinner')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FFD700, #FFA500);">🧪</div>
+                            <div class="product-info">
+                                <h3>Dinner Lady Lemon Tart</h3>
+                                <p>Лимонный тарт с меренгой.</p>
+                                <div class="product-price" data-price="680">680 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('dinner')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('jam')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #DC143C, #8B0000);">🧪</div>
+                            <div class="product-info">
+                                <h3>Jam Monster Strawberry</h3>
+                                <p>Тост с клубничным джемом.</p>
+                                <div class="product-price" data-price="750">750 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('jam')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Аксессуары -->
+                <div class="card">
+                    <h3>🔧 Аксессуары</h3>
+                    <div class="product-gallery">
+                        <div class="product-item" onclick="showProductDetail('coils')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #C0C0C0, #A9A9A9);">🔧</div>
+                            <div class="product-info">
+                                <h3>Испарители SMOK RPM</h3>
+                                <p>Сменные испарители, разное сопротивление.</p>
+                                <div class="product-price" data-price="450">450 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('coils')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('battery')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FFD700, #FFA500);">🔧</div>
+                            <div class="product-info">
+                                <h3>Аккумуляторы 18650</h3>
+                                <p>Высокотоковые, 3000mAh, 20A.</p>
+                                <div class="product-price" data-price="890">890 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('battery')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('charger')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #4169E1, #0000CD);">🔧</div>
+                            <div class="product-info">
+                                <h3>Зарядное Nitecore</h3>
+                                <p>Умное зарядное устройство.</p>
+                                <div class="product-price" data-price="1290">1 290 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('charger')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                        <div class="product-item" onclick="showProductDetail('case')">
+                            <div class="product-image" style="background: linear-gradient(135deg, #FF69B4, #FF1493);">🔧</div>
+                            <div class="product-info">
+                                <h3>Чехлы для вейпа</h3>
+                                <p>Защитные чехлы, силикон/кожа.</p>
+                                <div class="product-price" data-price="350">350 ₽</div>
+                                <button class="btn btn-small" onclick="event.stopPropagation(); addToCart('case')">🛒 В корзину</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECIPES TAB -->
+            <div id="recipes" class="tab-content">
+                <div class="card">
+                    <h2>🍸 Коктейли с Jägermeister</h2>
+                    <p>Классические и современные рецепты коктейлей с легендарным травяным ликером.</p>
+                </div>
+
+                <div class="grid">
+                    <div class="card">
+                        <h3>❄️ Ледяной шот (Jäger Bomb)</h3>
+                        <p><strong>Ингредиенты:</strong></p>
+                        <ul>
+                            <li>Jägermeister — 40 мл</li>
+                            <li>Энергетик — 150 мл</li>
+                        </ul>
+                        <p><strong>Приготовление:</strong> Охладите Jägermeister до -18°C. Налейте энергетик в бокал, опустите шот с ликером.</p>
+                        <button class="btn btn-small" onclick="addToCart('jager-classic')">🛒 Добавить Jäger</button>
+                    </div>
+                    <div class="card">
+                        <h3>🥒 Кукумбер (Cucumber)</h3>
+                        <p><strong>Ингредиенты:</strong></p>
+                        <ul>
+                            <li>Jägermeister — 50 мл</li>
+                            <li>Спрайт — 100 мл</li>
+                            <li>Огурец — 3-4 слайса</li>
+                        </ul>
+                        <p><strong>Приготовление:</strong> Налейте ликер в хайбол, добавьте лед доверху, долейте спрайт, добавьте огурцы.</p>
+                        <button class="btn btn-small" onclick="addToCart('jager-classic')">🛒 Добавить Jäger</button>
+                    </div>
+                    <div class="card">
+                        <h3>🍊 Ягрони (Jäger Negroni)</h3>
+                        <p><strong>Ингредиенты:</strong></p>
+                        <ul>
+                            <li>Jägermeister — 30 мл</li>
+                            <li>Кампари — 30 мл</li>
+                            <li>Мартини — 30 мл</li>
+                        </ul>
+                        <p><strong>Приготовление:</strong> Смешайте все ингредиенты со льдом в смесительном бокале. Подавайте в бокале "рокс".</p>
+                        <button class="btn btn-small" onclick="addToCart('jager-classic')">🛒 Добавить Jäger</button>
+                    </div>
+                    <div class="card">
+                        <h3>🍵 Теплый охотничий чай</h3>
+                        <p><strong>Ингредиенты:</strong></p>
+                        <ul>
+                            <li>Jägermeister — 50 мл</li>
+                            <li>Черный чай с мятой — 80 мл</li>
+                            <li>Сок лайма — 20 мл</li>
+                            <li>Кленовый сироп — 10 мл</li>
+                        </ul>
+                        <p><strong>Приготовление:</strong> Смешайте все ингредиенты, прогрейте. Подавайте в термобокале.</p>
+                        <button class="btn btn-small" onclick="addToCart('jager-classic')">🛒 Добавить Jäger</button>
+                    </div>
+                    <div class="card">
+                        <h3>🍹 Jäger Mule</h3>
+                        <p><strong>Ингредиенты:</strong></p>
+                        <ul>
+                            <li>Jägermeister — 50 мл</li>
+                            <li>Имбирное пиво — 150 мл</li>
+                            <li>Сок лайма — 15 мл</li>
+                            <li>Лед</li>
+                        </ul>
+                        <p><strong>Приготовление:</strong> Наполните медную кружку льдом, добавьте ликер и сок лайма, долейте имбирное пиво.</p>
+                        <button class="btn btn-small" onclick="addToCart('jager-classic')">🛒 Добавить Jäger</button>
+                    </div>
+                    <div class="card">
+                        <h3>🌿 Jäger Garden</h3>
+                        <p><strong>Ингредиенты:</strong></p>
+                        <ul>
+                            <li>Jägermeister — 40 мл</li>
+                            <li>Сок яблока — 80 мл</li>
+                            <li>Сок лимона — 20 мл</li>
+                            <li>Сироп бузины — 15 мл</li>
+                            <li>Свежая мята</li>
+                        </ul>
+                        <p><strong>Приготовление:</strong> Взболтайте все ингредиенты со льдом, процедите в бокал. Украсьте мятой.</p>
+                        <button class="btn btn-small" onclick="addToCart('jager-classic')">🛒 Добавить Jäger</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CART TAB -->
+            <div id="cart" class="tab-content">
+                <div class="card">
+                    <h2>🛒 Корзина</h2>
+                    <p>Ваши выбранные товары</p>
+                </div>
+
+                <div id="cartContent">
+                    <div class="card" id="emptyCart">
+                        <div style="text-align: center; padding: 50px;">
+                            <span style="font-size: 80px;">🛒</span>
+                            <h3>Корзина пуста</h3>
+                            <p>Перейдите в каталог, чтобы добавить товары</p>
+                            <button class="btn" onclick="return switchTab('products')" style="margin-top: 20px;">🍾 Перейти к покупкам</button>
+                        </div>
+                    </div>
+
+                    <div id="cartItems" style="display: none;">
+                        <!-- Cart items will be loaded here dynamically -->
+                    </div>
+
+                    <div class="card" id="cartSummary" style="display: none;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                            <div>
+                                <h3>Итого:</h3>
+                                <div id="totalPrice" style="font-size: 36px; font-weight: bold; color: var(--accent-color); text-shadow: 0 0 15px var(--shadow-color);">0 ₽</div>
+                                <p id="totalItems" style="color: var(--text-color);">Товаров: 0</p>
+                            </div>
+                            <div style="display: flex; gap: 15px;">
+                                <button class="btn btn-secondary" onclick="clearCart()">🗑️ Очистить</button>
+                                <button class="btn" onclick="checkout()">💳 Оформить заказ</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACTS TAB -->
+            <div id="contacts" class="tab-content">
+                <div class="card">
+                    <h2>📞 Контактная информация</h2>
+                    <p>Свяжитесь с нами для получения дополнительной информации о продукции, сотрудничестве или мероприятиях.</p>
+                </div>
+
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <div class="contact-text">
+                            <h4>Адрес</h4>
+                            <p>Россия, Москва<br>ул. Jägermeister, 56</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <div class="contact-text">
+                            <h4>Телефон</h4>
+                            <p>+7 (800) 56-JAGER<br>+7 (800) 565-2437</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">✉️</span>
+                        <div class="contact-text">
+                            <h4>Email</h4>
+                            <p>info@jagermeister.ru<br>support@jagermeister.ru</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🕐</span>
+                        <div class="contact-text">
+                            <h4>Режим работы</h4>
+                            <p>Пн-Пт: 9:00 - 18:00<br>Сб-Вс: выходной</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📧 Отправить сообщение</h3>
+                    <form id="contactForm" onsubmit="handleContact(event)">
+                        <div class="form-group">
+                            <label for="contactName">Ваше имя *</label>
+                            <input type="text" id="contactName" required placeholder="Иван Иванов" minlength="2">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email *</label>
+                            <input type="email" id="contactEmail" required placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactSubject">Тема</label>
+                            <select id="contactSubject">
+                                <option>Общий вопрос</option>
+                                <option>Сотрудничество</option>
+                                <option>Мероприятия</option>
+                                <option>Претензия</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Сообщение *</label>
+                            <textarea id="contactMessage" rows="5" required placeholder="Ваше сообщение..." minlength="10"></textarea>
+                        </div>
+                        <button type="submit" class="btn">Отправить сообщение</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="theme-switch.js"></script>
+</body>
+</html>
